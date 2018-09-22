@@ -1,7 +1,8 @@
 resource "aws_security_group" "sg" {
   name = "${var.name}"
   description = "${var.description}"
-  vpc_id = "${var.vpc_id}"
+  # vpc_id = "${var.vpc_id}"
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
   ingress {
     from_port   = 80
@@ -35,4 +36,8 @@ resource "aws_security_group" "sg" {
 terraform {
   # The configuration for this backend will be filled in by Terragrunt
   backend "s3" {}
+}
+
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
 }
